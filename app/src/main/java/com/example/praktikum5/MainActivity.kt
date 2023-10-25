@@ -84,6 +84,7 @@ fun TampilForm(cobaViewModel: CobaViewModel = viewModel()) {
 
     var textNama by remember { mutableStateOf("") }
     var textTlp by remember { mutableStateOf("") }
+    var textAlamat by remember { mutableStateOf("") }
 
     val context = LocalContext.current
     val dataForm: DataForm
@@ -109,12 +110,22 @@ fun TampilForm(cobaViewModel: CobaViewModel = viewModel()) {
             textTlp = it
         }
     )
+    OutlinedTextField(
+        value = textAlamat,
+        singleLine = true,
+        shape = MaterialTheme.shapes.large,
+        modifier = Modifier.fillMaxWidth(),
+        label = { Text(text = "Alamat") },
+        onValueChange = {
+            textAlamat = it
+        })
+
     SelectJK(
         options = jenis.map { id -> context.resources.getString(id) },
         onSelectionChanged = { cobaViewModel.setJenisK(it)})
     Button(
         modifier = Modifier.fillMaxWidth(),
-        onClick = { cobaViewModel.insertData(textNama, textTlp, dataForm.sex)
+        onClick = { cobaViewModel.insertData(textNama, textTlp, textAlamat, dataForm.sex)
         }
     ){
         Text(
@@ -126,6 +137,7 @@ fun TampilForm(cobaViewModel: CobaViewModel = viewModel()) {
     TextHasil(
         namanya = cobaViewModel.namaUsr,
         telponnya = cobaViewModel.noTlp,
+        alamatnya = cobaViewModel.alamatUsr,
         jenisnya = cobaViewModel.jenisKl
     )
 }
@@ -160,7 +172,7 @@ fun SelectJK(
 }
 
 @Composable
-fun TextHasil(namanya: String, telponnya: String, jenisnya: String){
+fun TextHasil(namanya: String, telponnya: String, alamatnya: String, jenisnya: String){
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
@@ -175,6 +187,11 @@ fun TextHasil(namanya: String, telponnya: String, jenisnya: String){
         )
         Text(
             text = "Telpon :" + telponnya,
+            modifier = Modifier
+                .padding(horizontal = 10.dp, vertical = 5.dp)
+        )
+        Text(
+            text = "Alamat : " + alamatnya,
             modifier = Modifier
                 .padding(horizontal = 10.dp, vertical = 5.dp)
         )
